@@ -5,7 +5,7 @@ utiliza mySQL para persistencia de datos con las siginetes tablas:
 [SQL]
 ```
 delimiter $$
-CREATE PROCEDURE obtener_poliza_por_numero(IN num_poliza VARCHAR(255))\
+CREATE PROCEDURE obtener_poliza_por_numero(IN poliza VARCHAR(255))\
 BEGIN
   SELECT
     pc.*,
@@ -15,7 +15,7 @@ BEGIN
   FROM (
     SELECT *
     FROM poliza
-    WHERE num_poliza = num_poliza
+    WHERE num_poliza = poliza
   ) pc
   JOIN poliza_vehiculo pv ON pc.id = pv.poliza_id
   JOIN vehiculo v ON pv.vehiculo_id = v.id;
@@ -28,6 +28,7 @@ el puerto que utiliza es el 8081
 Este es un ejempo de una consulta que se puede realizarla copnsulta, tambien se debe pasar el parametro `num_poliza`
 
 ## tablas de la base de datos 
+Estas son las tablas necesaria para hacer las consultas 
 ```
 CREATE TABLE cliente (
   id INT NOT NULL AUTO_INCREMENT,
@@ -57,4 +58,13 @@ CREATE TABLE vehiculo (
   PRIMARY KEY (id),
   FOREIGN KEY (poliza_id) REFERENCES poliza (id)
 );
+CREATE TABLE `poliza_vehiculo` (
+  `poliza_id` bigint NOT NULL,
+  `vehiculo_id` bigint NOT NULL,
+  PRIMARY KEY (`poliza_id`,`vehiculo_id`),
+  KEY `FK3yg2xae0a2kxku0isa421y0f9` (`vehiculo_id`),
+  CONSTRAINT `FK3yg2xae0a2kxku0isa421y0f9` FOREIGN KEY (`vehiculo_id`) REFERENCES `vehiculo` (`id`),
+  CONSTRAINT `FKt9s3v64qonuvomk2y8fr093g3` FOREIGN KEY (`poliza_id`) REFERENCES `poliza` (`id`)
+)
 ````
+las tablas igual mente son generadas por la api al ejecutarse 
